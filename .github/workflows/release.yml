@@ -1,5 +1,6 @@
 name: Release
 
+# 注册并启用 fork 仓库的 Release workflow（无功能影响）
 on:
   push:
     tags:
