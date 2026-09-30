@@ -6,6 +6,8 @@ export const escapeCSVValue = (value: unknown): string => {
   const stringValue = String(value)
   const escapedValue = stringValue.replace(/"/g, '""')
 
+  // A bare "-" is a common empty-placeholder, not a formula.
+  if (stringValue === '-') return stringValue
   // Spreadsheet applications may execute cells beginning with these characters.
   if (CSV_FORMULA_PREFIX.test(stringValue)) return `"\'${escapedValue}"`
   if (/[,"\n\r]/.test(stringValue)) return `"${escapedValue}"`

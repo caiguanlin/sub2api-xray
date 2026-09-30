@@ -38,11 +38,16 @@
   </Teleport>
 </template>
 
+<script lang="ts">
+let dialogIdCounter = 0
+const openDialogs = new Set<string>()
+</script>
+
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import Icon from '@/components/icons/Icon.vue'
 
-let dialogIdCounter = 0
+// 生成唯一ID以避免多个对话框时ID冲突
 const dialogId = `modal-title-${++dialogIdCounter}`
 
 const dialogRef = ref<HTMLElement | null>(null)
@@ -126,12 +131,19 @@ const scheduleInitialFocus = async () => {
   })
 }
 
+const updateScrollLock = (isOpen: boolean) => {
+  if (isOpen) openDialogs.add(dialogId)
+  else openDialogs.delete(dialogId)
+  document.body.classList.toggle('modal-open', openDialogs.size > 0)
+}
+
+// Prevent body scroll when modal is open and manage focus
 watch(
   () => props.show,
   async (isOpen) => {
     if (isOpen) {
       previousActiveElement = document.activeElement as HTMLElement
-      document.body.classList.add('modal-open')
+      updateScrollLock(true)
       await nextTick()
       if (modalBodyRef.value) {
         modalBodyRef.value.scrollTop = 0
@@ -144,7 +156,7 @@ watch(
       window.cancelAnimationFrame(pendingFocusFrame)
       pendingFocusFrame = null
     }
-    document.body.classList.remove('modal-open')
+    updateScrollLock(false)
     if (previousActiveElement && typeof previousActiveElement.focus === 'function') {
       previousActiveElement.focus()
     }
@@ -162,6 +174,6 @@ onUnmounted(() => {
   if (pendingFocusFrame !== null) {
     window.cancelAnimationFrame(pendingFocusFrame)
   }
-  document.body.classList.remove('modal-open')
+  updateScrollLock(false)
 })
 </script>
