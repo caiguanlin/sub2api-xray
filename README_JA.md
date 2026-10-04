@@ -38,7 +38,7 @@ Sub2API Xray は [Sub2API](https://github.com/Wei-Shaw/sub2api) の継続的に�
 
 ## 現在の開発バージョン
 
-現在の正式版は [v0.2.10-xray6](https://github.com/caiguanlin/sub2api-xray/releases/tag/v0.2.10-xray6) で、公式 `v0.2.10` とそれに対応する最新の `main` コミットに同期済みです。
+現在の正式版は [v0.2.13-xray7](https://github.com/caiguanlin/sub2api-xray/releases/tag/v0.2.13-xray7) で、公式 `v0.2.13` とそれに対応する最新の `main` コミットに同期済みです。
 
 ## ⚠️ 重要なお知らせ
 
